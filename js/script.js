@@ -12,7 +12,6 @@ const startPageNumber = 1;
 
 //showpage function displays the list of student per page once the link is clicked.
 const showPage = (list, page) => {
-  // debugger
 // firstIndex and lastIndex variables retreive the index for the first and last student on the on a particular page.
   const firstIndex = page * studentPerPage - studentPerPage
   const lastIndex = page * studentPerPage
@@ -103,6 +102,7 @@ let searchFunction = (searchInput, names) => {
         }
       }
     }
+
 
 // add click event on the search button and reset input value to empty.
 searchButton.addEventListener('click', () => {
