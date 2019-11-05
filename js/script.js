@@ -6,9 +6,9 @@ FSJS project 2 - List Filter and Pagination
 // Study guide for this project - https://drive.google.com/file/d/1OD1diUsTMdpfMDv677TfL1xO2CEkykSz/view?usp=sharing
 const studentsList = document.querySelectorAll('.student-item');
 
-
 const studentPerPage = 10;
 const startPageNumber = 1;
+
 
 //showpage function displays the list of student per page once the link is clicked.
 const showPage = (list, page) => {
@@ -30,7 +30,6 @@ const showPage = (list, page) => {
 let pages = document.querySelector('.page');
 
 const appendPageLinks = (list) => {
-  // debugger
   const numOfPage = Math.ceil(studentsList.length / studentPerPage);
   const div = document.createElement('div');
   const ul = document.createElement('ul');
@@ -44,6 +43,7 @@ const appendPageLinks = (list) => {
     let a = document.createElement('a')
 // add page number to each link
     a.innerHTML = `${i}`;
+    a.href = '#';
     li.appendChild(a);
     ul.appendChild(li);
 // highlight current page link upon intial load
@@ -73,3 +73,40 @@ const appendPageLinks = (list) => {
 // call both appendPageLinks and showPage function to load links and first page.
 appendPageLinks(studentsList);
 showPage(studentsList, startPageNumber);
+
+
+let pageHeader = document.querySelector('.page-header');
+let searchDiv = document.createElement('div');
+searchDiv.className = 'student-search';
+let input = document.createElement('input');
+input.placeholder="Search for students...";
+input.id = 'search-input';
+let button = document.createElement('button');
+button.innerHTML = 'Search';
+button.id = 'submit';
+searchDiv.appendChild(input);
+searchDiv.appendChild(button);
+pageHeader.appendChild(searchDiv);
+
+const search = document.querySelector('#search-input');
+const submit = document.querySelector('#submit');
+const students = document.querySelectorAll('.student-item .student-details h3');
+
+
+let searchFunction = (searchInput, names) => {
+      for(let i = 0; i < names.length; i++) {
+        console.log(names[i].textContent.includes('i'));
+        break
+        if(names[i].textContent.includes('searchInput.value')){
+          studentsList[i].style.display = '';
+        } else {
+          studentsList[i].style.display = 'none';
+        }
+      }
+    }
+
+
+search.addEventListener('keyup', () => {
+  searchFunction(search, students);
+  console.log('Keyup event on the Search input is functional!');
+});
