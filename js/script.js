@@ -69,6 +69,10 @@ const appendPageLinks = (list) => {
   }
 }
 
+/***
+ Search functionality below
+***/
+
 // call both appendPageLinks and showPage function to load links and first page.
 appendPageLinks(studentsList);
 showPage(studentsList, startPageNumber);
@@ -102,7 +106,6 @@ let searchFunction = (searchInput, names) => {
         }
       }
     }
-
 
 // add click event on the search button and reset input value to empty.
 searchButton.addEventListener('click', () => {
