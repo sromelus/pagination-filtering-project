@@ -26,7 +26,7 @@ const showPage = (list, page) => {
   }
 }
 
-let pages = document.querySelector('.page');
+const pages = document.querySelector('.page');
 
 const appendPageLinks = (list) => {
   const numOfPage = Math.ceil(studentsList.length / studentPerPage);
@@ -38,8 +38,8 @@ const appendPageLinks = (list) => {
 
 // create links for each page
   for(i = 1; i <= numOfPage; i++) {
-    let li = document.createElement('li');
-    let a = document.createElement('a')
+    const li = document.createElement('li');
+    const a = document.createElement('a')
 // add page number to each link
     a.innerHTML = `${i}`;
     a.href = '#';
@@ -51,7 +51,7 @@ const appendPageLinks = (list) => {
     }
   }
 
-  let links = document.querySelectorAll('a');
+  const links = document.querySelectorAll('a');
 // loop through and assign click event to each one
   for(i = 0; i < links.length; i++) {
     let link = links[i];
@@ -69,22 +69,23 @@ const appendPageLinks = (list) => {
   }
 }
 
-/***
- Search functionality below
-***/
 
 // call both appendPageLinks and showPage function to load links and first page.
 appendPageLinks(studentsList);
 showPage(studentsList, startPageNumber);
 
+/***
+Search functionality below
+***/
+
 // select and create input tag, button tag for search etc
-let pageHeader = document.querySelector('.page-header');
-let searchDiv = document.createElement('div');
+const pageHeader = document.querySelector('.page-header');
+const searchDiv = document.createElement('div');
 searchDiv.className = 'student-search';
-let input = document.createElement('input');
+const input = document.createElement('input');
 input.placeholder="Search for students...";
 input.id = 'search-input';
-let button = document.createElement('button');
+const button = document.createElement('button');
 button.innerHTML = 'Search';
 button.id = 'search';
 searchDiv.appendChild(input);
@@ -97,9 +98,9 @@ const searchButton = document.querySelector('#search');
 const students = document.querySelectorAll('.student-item .student-details h3');
 
 //loop through list of names to only display letters or names that matches the input value.
-let searchFunction = (searchInput, names) => {
+const searchFunction = (searchInput, names) => {
       for(let i = 0; i < names.length; i++) {
-        if(names[i].textContent.includes(searchInput.value)){
+        if(names[i].textContent.includes(searchInput.value.toLowerCase())){
           studentsList[i].style.display = '';
         } else {
           studentsList[i].style.display = 'none';
@@ -107,7 +108,12 @@ let searchFunction = (searchInput, names) => {
       }
     }
 
-// add click event on the search button and reset input value to empty.
+//add keyup and click event on the search button and reset input value to empty.
+searchInput.addEventListener('keyup', () => {
+  console.log('keyup is working');
+  searchFunction(searchInput, students);
+});
+
 searchButton.addEventListener('click', () => {
   searchFunction(searchInput, students);
   searchInput.value = '';
