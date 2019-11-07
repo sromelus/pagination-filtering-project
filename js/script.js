@@ -117,7 +117,7 @@ const searchFunction = (searchInput, names) => {
 //reassign studentsList to the new list of all matched student
       studentsList = document.querySelectorAll('.student-item');
 
-// if the search returned no matches 'NO results' is added to the page
+// if the search returns no matches 'NO results' is added to the page
       if(studentsList.length === 0){
         studentsListContainer.innerHTML = 'No results'
         studentsListContainer.className = 'no-results'
