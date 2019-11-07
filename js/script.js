@@ -4,8 +4,11 @@ FSJS project 2 - List Filter and Pagination
 ******************************************/
 
 // Study guide for this project - https://drive.google.com/file/d/1OD1diUsTMdpfMDv677TfL1xO2CEkykSz/view?usp=sharing
-const studentsList = document.querySelectorAll('.student-item');
 
+// I used let to declare studentsList variable because i reasign it later
+let studentsList = document.querySelectorAll('.student-item');
+
+const studentsListContainer = document.querySelector('.student-list');
 const studentPerPage = 10;
 const startPageNumber = 1;
 
@@ -74,6 +77,10 @@ const appendPageLinks = (list) => {
 appendPageLinks(studentsList);
 showPage(studentsList, startPageNumber);
 
+
+const paginationContainer = document.querySelector('.pagination')
+
+
 /***
 Search functionality below
 ***/
@@ -98,22 +105,29 @@ const searchButton = document.querySelector('#search');
 const students = document.querySelectorAll('.student-item .student-details h3');
 
 //loop through list of names to only display letters or names that matches the input value.
+//set the innerHTML for student-list class and student-item class to empty.
 const searchFunction = (searchInput, names) => {
+  studentsListContainer.innerHTML = '';
+  paginationContainer.innerHTML = '';
       for(let i = 0; i < names.length; i++) {
         if(names[i].textContent.includes(searchInput.value.toLowerCase())){
-          studentsList[i].style.display = '';
-        } else {
-          studentsList[i].style.display = 'none';
+          studentsListContainer.appendChild(studentsList[i]);
         }
       }
+//reassign studentsList to the new list of all matched student
+      studentsList = document.querySelectorAll('.student-item');
+
+// if the search returned no matches 'NO results' is added to the page
+      if(studentsList.length === 0){
+        studentsListContainer.innerHTML = 'No results'
+        studentsListContainer.className = 'no-results'
+      }
+
+      appendPageLinks(studentsList);
+      showPage(studentsList, startPageNumber);
     }
 
-//add keyup and click event on the search button and reset input value to empty.
-searchInput.addEventListener('keyup', () => {
-  console.log('keyup is working');
-  searchFunction(searchInput, students);
-});
-
+//add click event on the search button and reset input value to empty.
 searchButton.addEventListener('click', () => {
   searchFunction(searchInput, students);
   searchInput.value = '';
