@@ -54,10 +54,12 @@ const appendPageLinks = (list) => {
     }
   }
 
+
+
   const links = document.querySelectorAll('a');
 // loop through and assign click event to each one
   for(i = 0; i < links.length; i++) {
-    let link = links[i];
+    const link = links[i];
     link.addEventListener('click', (e) => {
 // loop through each link, make sure only one link has a class active.
       for(i = 0; i < links.length; i++) {
@@ -72,14 +74,18 @@ const appendPageLinks = (list) => {
   }
 }
 
+const noResult = () => {
+  studentsListContainer.innerHTML = 'No results, Please refresh and search for another name.'
+  studentsListContainer.id = 'no-results'
+}
+
 
 // call both appendPageLinks and showPage function to load links and first page.
 appendPageLinks(studentsList);
 showPage(studentsList, startPageNumber);
 
-
-const paginationContainer = document.querySelector('.pagination')
-
+// I used let to declare paginationContainer variable because i reasign it later
+let paginationContainer = document.querySelector('.pagination')
 
 /***
 Search functionality below
@@ -106,29 +112,42 @@ const students = document.querySelectorAll('.student-item .student-details h3');
 
 //loop through list of names to only display letters or names that matches the input value.
 //set the innerHTML for student-list class and student-item class to empty.
-const searchFunction = (searchInput, names) => {
-  studentsListContainer.innerHTML = '';
-  paginationContainer.innerHTML = '';
-      for(let i = 0; i < names.length; i++) {
-        if(names[i].textContent.includes(searchInput.value.toLowerCase())){
-          studentsListContainer.appendChild(studentsList[i]);
-        }
-      }
-//reassign studentsList to the new list of all matched student
-      studentsList = document.querySelectorAll('.student-item');
+const searchFunction = (searchInput) => {
+  const input = searchInput.value.toLowerCase();
+  paginationContainer = document.querySelector('.pagination')
 
-// if the search returns no matches 'NO results' is added to the page
-      if(studentsList.length === 0){
-        studentsListContainer.innerHTML = 'No results'
-        studentsListContainer.className = 'no-results'
-      }
+  if(paginationContainer === null || studentsList.length === 0 || input === '' ){
+    noResult();
+  } else {
+    studentsListContainer.innerHTML = '';
+    pages.removeChild(paginationContainer)
 
-      appendPageLinks(studentsList);
-      showPage(studentsList, startPageNumber);
+    for(let i = 0; i < studentsList.length; i++) {
+      const studentName = studentsList[i].childNodes[1].childNodes[3].textContent
+      if(studentName.includes(input)){
+        studentsListContainer.appendChild(studentsList[i]);
+      }
     }
+/**
+if the UL with the student-list class is not empty reasign the studentsList variable
+with the new list of all the names that matches the value of the search node.
+**/
 
-//add click event on the search button and reset input value to empty.
+    if (studentsListContainer.innerHTML !== '') {
+      studentsList = document.querySelectorAll('.student-item');
+      appendPageLinks(studentsList);
+    } else {
+      noResult();
+    }
+  }
+}
+
+//add click and keyup event on the search button and reset input value to empty.
+searchInput.addEventListener('keyup', () => {
+  searchFunction(searchInput);
+});
+
 searchButton.addEventListener('click', () => {
-  searchFunction(searchInput, students);
+  searchFunction(searchInput);
   searchInput.value = '';
 });

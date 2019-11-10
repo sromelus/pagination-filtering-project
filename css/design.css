@@ -118,6 +118,6 @@ body{
       color: #fff;
     }
 
-    .no-results {
+    #no-results {
       color: red;
     }
