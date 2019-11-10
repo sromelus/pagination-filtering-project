@@ -110,34 +110,35 @@ const searchInput = document.querySelector('#search-input');
 const searchButton = document.querySelector('#search');
 const students = document.querySelectorAll('.student-item .student-details h3');
 
-//loop through list of names to only display letters or names that matches the input value.
+//searchFunction loops through list of names to only display letters or names that matches the input value.
 //set the innerHTML for student-list class and student-item class to empty.
 const searchFunction = (searchInput) => {
   const input = searchInput.value.toLowerCase();
   paginationContainer = document.querySelector('.pagination')
-
-  if(paginationContainer === null || studentsList.length === 0 || input === '' ){
-    noResult();
-  } else {
-    studentsListContainer.innerHTML = '';
-    pages.removeChild(paginationContainer)
-
-    for(let i = 0; i < studentsList.length; i++) {
-      const studentName = studentsList[i].childNodes[1].childNodes[3].textContent
-      if(studentName.includes(input)){
-        studentsListContainer.appendChild(studentsList[i]);
-      }
-    }
-/**
-if the UL with the student-list class is not empty reasign the studentsList variable
-with the new list of all the names that matches the value of the search node.
-**/
-
-    if (studentsListContainer.innerHTML !== '') {
-      studentsList = document.querySelectorAll('.student-item');
-      appendPageLinks(studentsList);
-    } else {
+  if(input !== ''){
+    if(paginationContainer === null){
       noResult();
+    } else {
+      studentsListContainer.innerHTML = '';
+      pages.removeChild(paginationContainer)
+
+      for(let i = 0; i < studentsList.length; i++) {
+        const studentName = studentsList[i].childNodes[1].childNodes[3].textContent
+        if(studentName.includes(input)){
+          studentsListContainer.appendChild(studentsList[i]);
+        }
+      }
+
+      /**
+      if the UL with the student-list class is not empty reasign the studentsList variable
+      with the new list of all the names that matches the value of the search node.
+      **/
+      if (studentsListContainer.innerHTML !== '') {
+        studentsList = document.querySelectorAll('.student-item');
+        appendPageLinks(studentsList);
+      } else {
+        noResult();
+      }
     }
   }
 }
