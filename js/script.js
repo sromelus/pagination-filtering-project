@@ -104,6 +104,7 @@ const searchInput = document.querySelector('#search-input');
 const searchButton = document.querySelector('#search');
 const students = document.querySelectorAll('.student-item .student-details h3');
 
+//create a no results message and append it to the DOM
 let noMatch;
 const p  = document.createElement('p')
 const text = 'No results, Please search for another name.';
@@ -113,6 +114,7 @@ pages.insertBefore(p, studentsListContainer)
 noMatch = studentsListContainer.previousElementSibling;
 noMatch.style.display = 'none';
 
+//noResult function displays the "no results" message when the input is empty or when there is not a match.
 const noResult = () => {
   studentsListContainer.style.display = 'none';
   noMatch.style.display = '';
