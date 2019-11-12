@@ -75,8 +75,8 @@ const appendPageLinks = (list) => {
 
 
 // call both appendPageLinks and showPage function to load links and first page.
-appendPageLinks(studentsList);
 showPage(studentsList, startPageNumber);
+appendPageLinks(studentsList);
 
 // I used let to declare paginationContainer variable because i reasign it later
 let paginationContainer = document.querySelector('.pagination')
@@ -133,7 +133,10 @@ const searchFunction = (searchInput, students) => {
   }
 
   if(input.length === 0){
-    noResult();
+    noMatch.style.display = 'none';
+    studentsListContainer.style.display = ''
+    showPage(studentsList, startPageNumber);
+    appendPageLinks(studentsList);
   } else  {
     for(let i = 0; i < students.length; i++) {
       students[i].style.display = 'none';
@@ -157,7 +160,7 @@ const searchFunction = (searchInput, students) => {
 //add click and keyup event on the search button and reset input value to empty.
 searchInput.addEventListener('keyup', () => {
   if(searchInput.value.length === 0){
-    location.reload();
+    // location.reload();
   }
   searchFunction(searchInput, studentsList);
 });
