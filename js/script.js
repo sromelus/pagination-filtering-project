@@ -7,7 +7,6 @@ FSJS project 2 - List Filter and Pagination
 
 // I used let to declare studentsList variable because i reasign it later
 let studentsList = document.querySelectorAll('.student-item');
-
 const studentsListContainer = document.querySelector('.student-list');
 const studentPerPage = 10;
 const startPageNumber = 1;
@@ -32,7 +31,7 @@ const showPage = (list, page) => {
 const pages = document.querySelector('.page');
 
 const appendPageLinks = (list) => {
-  const numOfPage = Math.ceil(studentsList.length / studentPerPage);
+  const numOfPage = Math.ceil(list.length / studentPerPage);
   const div = document.createElement('div');
   const ul = document.createElement('ul');
   div.className = 'pagination';
@@ -74,11 +73,6 @@ const appendPageLinks = (list) => {
   }
 }
 
-const noResult = () => {
-  studentsListContainer.innerHTML = 'No results, Please refresh and search for another name.'
-  studentsListContainer.id = 'no-results'
-}
-
 
 // call both appendPageLinks and showPage function to load links and first page.
 appendPageLinks(studentsList);
@@ -110,45 +104,63 @@ const searchInput = document.querySelector('#search-input');
 const searchButton = document.querySelector('#search');
 const students = document.querySelectorAll('.student-item .student-details h3');
 
+let noMatch;
+const p  = document.createElement('p')
+const text = 'No results, Please search for another name.';
+p.innerText = text;
+p.id = 'no-results'
+pages.insertBefore(p, studentsListContainer)
+noMatch = studentsListContainer.previousElementSibling;
+noMatch.style.display = 'none';
+
+const noResult = () => {
+  studentsListContainer.style.display = 'none';
+  noMatch.style.display = '';
+}
+
+
 //searchFunction loops through list of names to only display letters or names that matches the input value.
 //set the innerHTML for student-list class and student-item class to empty.
-const searchFunction = (searchInput) => {
-  const input = searchInput.value.toLowerCase();
-  paginationContainer = document.querySelector('.pagination')
-  if(input !== ''){
-    if(paginationContainer === null){
+const searchFunction = (searchInput, students) => {
+  const names = [];
+  const input = searchInput.value.toLowerCase().trim();
+  paginationContainer = document.querySelector('.pagination');
+
+  if(paginationContainer !== null){
+    pages.removeChild(paginationContainer);
+  }
+
+  if(input.length === 0){
+    noResult();
+  } else  {
+    for(let i = 0; i < students.length; i++) {
+      students[i].style.display = 'none';
+      const studentNode = students[i].childNodes[1].childNodes[3].textContent;
+      if(input.length !== 0 && studentNode.includes(input)){
+        names.push(students[i])
+      }
+    }
+
+    if(names.length === 0){
       noResult();
     } else {
-      studentsListContainer.innerHTML = '';
-      pages.removeChild(paginationContainer)
-
-      for(let i = 0; i < studentsList.length; i++) {
-        const studentName = studentsList[i].childNodes[1].childNodes[3].textContent
-        if(studentName.includes(input)){
-          studentsListContainer.appendChild(studentsList[i]);
-        }
-      }
-
-      /**
-      if the UL with the student-list class is not empty reasign the studentsList variable
-      with the new list of all the names that matches the value of the search node.
-      **/
-      if (studentsListContainer.innerHTML !== '') {
-        studentsList = document.querySelectorAll('.student-item');
-        appendPageLinks(studentsList);
-      } else {
-        noResult();
-      }
+      studentsListContainer.style.display = '';
+      noMatch.style.display = 'none';
+      showPage(names, 1);
+      appendPageLinks(names);
     }
   }
 }
 
 //add click and keyup event on the search button and reset input value to empty.
 searchInput.addEventListener('keyup', () => {
-  searchFunction(searchInput);
+  if(searchInput.value.length === 0){
+    location.reload();
+  }
+  searchFunction(searchInput, studentsList);
 });
 
 searchButton.addEventListener('click', () => {
-  searchFunction(searchInput);
+  searchFunction(searchInput, studentsList);
   searchInput.value = '';
 });

@@ -121,3 +121,7 @@ body{
     #no-results {
       color: red;
     }
+
+    .show {
+      display: '';
+    }
