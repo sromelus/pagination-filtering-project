@@ -8,6 +8,7 @@ FSJS project 2 - List Filter and Pagination
 // I used let to declare studentsList variable because i reasign it later
 let studentsList = document.querySelectorAll('.student-item');
 const studentsListContainer = document.querySelector('.student-list');
+const pages = document.querySelector('.page');
 const studentPerPage = 10;
 const startPageNumber = 1;
 
@@ -28,7 +29,7 @@ const showPage = (list, page) => {
   }
 }
 
-const pages = document.querySelector('.page');
+// const pages = document.querySelector('.page');
 
 const appendPageLinks = (list) => {
   const numOfPage = Math.ceil(list.length / studentPerPage);
@@ -68,7 +69,7 @@ const appendPageLinks = (list) => {
           links[i].className = ''
         }
       }
-      showPage(studentsList, e.target.innerHTML);
+      showPage(list, e.target.innerHTML);
     });
   }
 }
@@ -159,13 +160,11 @@ const searchFunction = (searchInput, students) => {
 
 //add click and keyup event on the search button and reset input value to empty.
 searchInput.addEventListener('keyup', () => {
-  if(searchInput.value.length === 0){
-    // location.reload();
-  }
   searchFunction(searchInput, studentsList);
 });
 
-searchButton.addEventListener('click', () => {
+searchButton.addEventListener('click', (e) => {
+  e.preventDefault();
   searchFunction(searchInput, studentsList);
   searchInput.value = '';
 });
